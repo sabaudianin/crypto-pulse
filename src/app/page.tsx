@@ -1,12 +1,17 @@
 "use client";
-
-import { useTopCoins } from "@/hooks/useCrypto/useCrypto";
+import { useState } from "react";
+import { useCoins } from "@/hooks/useCrypto/useCrypto";
 import { CryptoCard } from "@/components/cryptoCard/cryptoCard";
 import { Skeleton } from "@/components/ui/skeleton";
 import { cn } from "@/lib/utils";
 
 export default function DashboardPage() {
-  const { data, isLoading, isFetching, isError } = useTopCoins();
+  const [page, setPage] = useState(1);
+  const perPage = 20;
+  const { data, isLoading, isFetching, isPlaceholderData, isError } = useCoins({
+    page: String(page),
+    perPage: String(perPage),
+  });
 
   if (isError) {
     return (
@@ -31,7 +36,7 @@ export default function DashboardPage() {
       </div>
 
       {/* content*/}
-      <section className="relative max-w-7xl mx-auto px-6 md:px-12 py-10 lg:py-20">
+      <section className="relative max-w-7xl mx-auto px-2 md:px-12 py-10 lg:py-20">
         <header className="mb-12 lg:mb-24 text-center space-y-6">
           <div className="flex items-center justify-center gap-3">
             <span className="relative flex h-3 w-3">
@@ -81,7 +86,7 @@ export default function DashboardPage() {
         ) : (
           <>
             {/* 2 duze karty */}
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-2 md:gap-8 mb-2 md:mb-12">
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-2  md:gap-8 mb-2 md:mb-12">
               {data?.slice(0, 2).map((coin, index) => (
                 <div
                   key={coin.id}
@@ -94,7 +99,7 @@ export default function DashboardPage() {
             </div>
 
             {/*reszta kafelkow*/}
-            <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-2 md:gap-8">
+            <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-2 sm:gap-4 md:gap-8">
               {data?.slice(2).map((coin, index) => (
                 <div
                   key={coin.id}
@@ -107,7 +112,34 @@ export default function DashboardPage() {
             </div>
           </>
         )}
+        <div className="flex justify-center items-center gap-4 mt-8">
+          <button
+            className="px-4 py-2 bg-blue-500 text-white rounded disabled:bg-gray-300 disabled:text-black"
+            onClick={() => setPage((old) => Math.max(old - 1, 1))}
 
+            disabled={page === 1}
+          >
+            Prev
+          </button>
+
+          <span className="font-bold">
+            Page {page}
+          </span>
+
+          <button
+            className="px-4 py-2 bg-blue-800 text-white rounded disabled:bg-gray-300 disabled:text-black"
+            onClick={() => {
+
+              if (!isPlaceholderData && data?.length === perPage) {
+                setPage((old) => old + 1);
+              }
+            }}
+
+            disabled={isPlaceholderData || (data && data.length < perPage) || (page === 2)}
+          >
+            Next
+          </button>
+        </div>
       </section>
     </div>
   );

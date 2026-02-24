@@ -1,13 +1,30 @@
-import { useQuery } from "@tanstack/react-query";
-import { getTopCoins } from "@/lib/api";
+import { useQuery, keepPreviousData } from "@tanstack/react-query";
+import type { GetCoinsParams } from "@/types/crypto";
 import type { Coin } from "@/types/crypto";
 
-export function useTopCoins() {
+function buildCoinsQuery(params: GetCoinsParams) {
+  const query = new URLSearchParams();
+
+  if (params.page) query.set("page", String(params.page));
+  if (params.perPage) query.set("perPage", String(params.perPage));
+  if (params.order) query.set("order", params.order);
+  if (params.currency) query.set("currency", params.currency);
+
+  return `/api/coins?${query.toString()}`;
+}
+
+export function useCoins(params: GetCoinsParams) {
   return useQuery<Coin[], Error>({
-    queryKey: ["topCoins"],
-    queryFn: getTopCoins,
-    retry: 2,
-    refetchOnWindowFocus: false,
-    refetchOnReconnect: true,
+    queryKey: ["coins", params],
+    queryFn: async () => {
+      const res = await fetch(buildCoinsQuery(params));
+
+      if (!res.ok) {
+        throw new Error("Failed to fetch coins");
+      }
+
+      return res.json();
+    },
+    placeholderData: keepPreviousData,
   });
 }

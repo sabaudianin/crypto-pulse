@@ -1,3 +1,4 @@
+//kontrakt danych
 export interface CoinResponse {
   id: string;
   symbol: string;
@@ -20,4 +21,11 @@ export interface Coin {
   high24h: number;
   low24h: number;
   ath: number;
+}
+
+export interface GetCoinsParams {
+  page?: string;
+  perPage?: string;
+  order?: string;
+  currency?: string;
 }
