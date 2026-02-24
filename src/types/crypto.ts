@@ -1,14 +1,17 @@
-export interface Coin {
+export interface CoinResponse {
   id: string;
-  rank: string;
   symbol: string;
   name: string;
-  priceUsd: string;
-  changePercent24h: string;
-  marketCapUsd: string;
+  current_price: number;
+  price_change_percentage_24h: number;
+  image: string;
 }
 
-export interface CoinResponse {
-  data: Coin[];
-  timestamp: number;
+export interface Coin {
+  id: string;
+  symbol: string;
+  name: string;
+  price: number;
+  change24h: number;
+  image: string;
 }
