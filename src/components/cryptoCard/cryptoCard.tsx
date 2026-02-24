@@ -1,59 +1,117 @@
+"use client";
 
 import Image from "next/image";
+import { useEffect, useRef, useState, useTransition } from "react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Coin } from "@/types/crypto";
 import { cn } from "@/lib/utils";
 
 export function CryptoCard({ coin }: { coin: Coin }) {
-    if (!coin) return null;
     const isPositive = coin.change24h > 0;
 
+    // animacja zmiany ceny
+    const prevPrice = useRef(coin.price);
+    const [flash, setFlash] = useState<"up" | "down" | null>(null);
+    const [, startTransition] = useTransition();
+
+    useEffect(() => {
+        startTransition(() => {
+            if (coin.price > prevPrice.current) {
+                setFlash("up");
+            } else if (coin.price < prevPrice.current) {
+                setFlash("down");
+            }
+        });
+
+        const timeout = setTimeout(() => startTransition(() => setFlash(null)), 600);
+        prevPrice.current = coin.price;
+
+        return () => clearTimeout(timeout);
+    }, [coin.price]);
+
     return (
-        <Card className={cn(
-            "relative group overflow-hidden transition-all duration-300",
-            "bg-foreground/5 backdrop-blur-xl border-foreground/10",
-            "hover:bg-foreground/10 hover:border-foreground/20 hover:-translate-y-1",
-            "before:absolute before:inset-0 before:-z-10 before:bg-linear-to-br",
-            isPositive ? "before:from-emerald-500/10" : "before:from-rose-500/10",
-            "before:to-transparent before:opacity-0 group-hover:opacity-100 before:transition-opacity"
-        )}>
+        <Card
+            className={cn(
+                "relative group overflow-hidden transition-all duration-500",
+                "bg-white/5 backdrop-blur-2xl border border-white/10",
+                "hover:-translate-y-2 hover:shadow-2xl hover:shadow-black/40",
+                flash === "up" && "ring-2 ring-emerald-400/60",
+                flash === "down" && "ring-2 ring-rose-400/60"
+            )}
+        >
+            {/* Shine sweep effect */}
+            <div className="pointer-events-none absolute inset-0 overflow-hidden">
+                <div className="absolute -left-full top-0 h-full w-1/2 bg-linear-to-r from-transparent via-white/10 to-transparent skew-x-12 group-hover:left-full transition-all duration-1000" />
+            </div>
 
+            {/* Gradient glow background */}
+            <div
+                className={cn(
+                    "absolute -right-10 -top-10 w-40 h-40 blur-3xl opacity-30 transition-colors duration-500",
+                    isPositive ? "bg-emerald-400/40" : "bg-rose-400/40"
+                )}
+            />
 
-            <div className={cn(
-                "absolute -right-4 -top-4 w-1/2 h-1/2 blur-2xl rounded-full opacity-20 transition-colors",
-                isPositive ? "bg-emerald-500" : "bg-rose-500"
-            )} />
+            <CardHeader className="flex flex-row items-center justify-between pb-2">
+                <CardTitle className="flex items-center gap-4">
 
-            <CardHeader className="flex flex-row items-center justify-between pb-2 space-y-0">
-                <CardTitle className="text-sm font-semibold flex items-center gap-3">
-                    <div className="relative w-8 h-8 p-1 rounded-full bg-foreground/10 ring-1 ring-foreground/20">
+                    <div
+                        className={cn(
+                            "relative w-12 h-12 rounded-2xl p-2 transition-all duration-300",
+                            "bg-white/10 backdrop-blur-md border border-white/20",
+                            "group-hover:scale-110 group-hover:rotate-3"
+                        )}
+                    >
                         <Image
                             src={coin.image}
                             alt={coin.name}
-                            width={32}
-                            height={32}
+                            fill
                             className="object-contain"
                         />
                     </div>
+
+
                     <div className="flex flex-col">
-                        <span className="text-foreground font-bold tracking-tight">{coin.name}</span>
-                        <span className="text-xs text-gray-700 uppercase font-medium">{coin.symbol}</span>
+                        <span className="text-lg font-bold tracking-tight text-white">
+                            {coin.name}
+                        </span>
+                        <span className="text-xs uppercase tracking-widest text-white/50 font-medium">
+                            {coin.symbol}
+                        </span>
                     </div>
                 </CardTitle>
             </CardHeader>
 
             <CardContent>
-                <div className="text-2xl font-black text-foreground tracking-tighter">
-                    ${coin.price.toLocaleString(undefined, { minimumFractionDigits: 2 })}
+
+                <div
+                    className={cn(
+                        "text-4xl font-extrabold tracking-tight tabular-nums transition-colors duration-300",
+                        flash === "up" && "text-emerald-400",
+                        flash === "down" && "text-rose-400",
+                        !flash && "text-white"
+                    )}
+                >
+                    $
+                    {coin.price.toLocaleString(undefined, {
+                        minimumFractionDigits: 2,
+                        maximumFractionDigits: 2,
+                    })}
                 </div>
 
-                <div className={cn(
-                    "inline-flex items-center gap-1 px-2 py-0.5 mt-2 rounded-full text-xs font-bold",
-                    isPositive
-                        ? " text-emerald-700 ring-1 ring-emerald-500/20"
-                        : " text-rose-700 ring-1 ring-rose-500/20"
-                )}>
-                    {isPositive ? "▲" : "▼"} {Math.abs(coin.change24h).toFixed(2)}%
+
+                <div
+                    className={cn(
+                        "inline-flex items-center gap-2 px-4 py-1.5 mt-4 rounded-full text-md font-semibold transition-all duration-300 bg-white/50",
+                        isPositive
+                            ? " text-emerald-600 ring-1 ring-emerald-500/30"
+                            : " text-pink-600 ring-1 ring-rose-500/30"
+                    )}
+                >
+                    <span className="text-base">
+                        {isPositive ? "▲" : "▼"}
+                    </span>
+                    {Math.abs(coin.change24h).toFixed(2)}%
                 </div>
             </CardContent>
         </Card>
