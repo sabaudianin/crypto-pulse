@@ -2,7 +2,7 @@
 
 import Image from "next/image";
 import { useEffect, useRef, useState, useTransition } from "react";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { Card, CardContent, CardHeader, CardTitle, CardFooter } from "@/components/ui/card";
 import { Coin } from "@/types/crypto";
 import { cn } from "@/lib/utils";
 
@@ -32,14 +32,14 @@ export function CryptoCard({ coin }: { coin: Coin }) {
     return (
         <Card
             className={cn(
-                "relative group overflow-hidden transition-all duration-500",
+                "flex flex-col h-full relative group overflow-hidden transition-all duration-500",
                 "bg-white/5 backdrop-blur-2xl border border-white/10",
                 "hover:-translate-y-2 hover:shadow-2xl hover:shadow-black/40",
                 flash === "up" && "ring-2 ring-emerald-400/60",
                 flash === "down" && "ring-2 ring-rose-400/60"
             )}
         >
-            {/* Shine sweep effect */}
+            {/* Shine sweep  */}
             <div className="pointer-events-none absolute inset-0 overflow-hidden">
                 <div className="absolute -left-full top-0 h-full w-1/2 bg-linear-to-r from-transparent via-white/10 to-transparent skew-x-12 group-hover:left-full transition-all duration-1000" />
             </div>
@@ -52,7 +52,7 @@ export function CryptoCard({ coin }: { coin: Coin }) {
                 )}
             />
 
-            <CardHeader className="flex flex-row items-center justify-between pb-2">
+            <CardHeader className="flex items-center justify-between pb-2 px-2 min-h-16">
                 <CardTitle className="flex items-center gap-4">
 
                     <div
@@ -67,12 +67,13 @@ export function CryptoCard({ coin }: { coin: Coin }) {
                             alt={coin.name}
                             fill
                             className="object-contain"
+                            sizes="auto"
                         />
                     </div>
 
 
                     <div className="flex flex-col">
-                        <span className="text-lg font-bold tracking-tight text-white">
+                        <span className="font-semibold tracking-tight text-white">
                             {coin.name}
                         </span>
                         <span className="text-xs uppercase tracking-widest text-white/50 font-medium">
@@ -80,13 +81,29 @@ export function CryptoCard({ coin }: { coin: Coin }) {
                         </span>
                     </div>
                 </CardTitle>
+                <CardTitle className="flex items-center">
+
+
+
+                    <div className="flex flex-col">
+                        <span className="text-xs font-bold tracking-tight text-white text-center">
+                            ATH:
+                        </span>
+                        <span className="text-xs uppercase tracking-widest text-white/50 font-medium">
+                            ${coin.ath.toLocaleString(undefined, {
+                                minimumFractionDigits: 2,
+                                maximumFractionDigits: 2,
+                            })}
+                        </span>
+                    </div>
+                </CardTitle>
             </CardHeader>
 
-            <CardContent>
+            <CardContent className="flex flex-col justify-center h-full">
 
                 <div
                     className={cn(
-                        "text-4xl font-extrabold tracking-tight tabular-nums transition-colors duration-300",
+                        "text-4xl font-extrabold tracking-tight tabular-nums transition-colors duration-300 text-center",
                         flash === "up" && "text-emerald-400",
                         flash === "down" && "text-rose-400",
                         !flash && "text-white"
@@ -99,21 +116,44 @@ export function CryptoCard({ coin }: { coin: Coin }) {
                     })}
                 </div>
 
-
-                <div
-                    className={cn(
-                        "inline-flex items-center gap-2 px-4 py-1.5 mt-4 rounded-full text-md font-semibold transition-all duration-300 bg-white/90",
-                        isPositive
-                            ? " text-emerald-600 ring-1 ring-emerald-500/30"
-                            : " text-pink-600 ring-1 ring-rose-500/30"
-                    )}
-                >
-                    <span className="text-base">
-                        {isPositive ? "▲" : "▼"}
-                    </span>
-                    {Math.abs(coin.change24h).toFixed(2)}%
-                </div>
             </CardContent>
+
+            <CardFooter className="px-3 flex justify-between items-end w-full">
+                <div className="flex justify-between items-center w-full">
+
+                    <div
+                        className={cn(
+                            "inline-flex items-center gap-2 px-2 py-1.5 mt-4 rounded-full font-semibold transition-all duration-300 bg-white/90 ",
+                            isPositive
+                                ? " text-emerald-600 ring-1 ring-emerald-500/30"
+                                : " text-pink-600 ring-1 ring-rose-500/30"
+                        )}
+                    >
+                        <span className="text-base">
+                            {isPositive ? "▲" : "▼"}
+                        </span>
+                        {Math.abs(coin.change24h).toFixed(2)}%
+                    </div>
+
+                    <div className="self-end pb-1 flex flex-col items-end justify-end text-white/70 font-semibold">
+                        <span className="text-xxs lg:text-xs  tracking-tight text-center">
+                            High 24h : $ {coin.high24h.toLocaleString(undefined, {
+                                minimumFractionDigits: 2,
+                                maximumFractionDigits: 2,
+                            })}
+                        </span>
+                        <span className="text-xxs lg:text-xs tracking-tight text-center">
+                            Low 24h : $ {coin.low24h.toLocaleString(undefined, {
+                                minimumFractionDigits: 2,
+                                maximumFractionDigits: 2,
+                            })}
+                        </span>
+                    </div>
+
+                </div>
+
+
+            </CardFooter>
         </Card>
     );
 }

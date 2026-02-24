@@ -5,6 +5,9 @@ export interface CoinResponse {
   current_price: number;
   price_change_percentage_24h: number;
   image: string;
+  high_24h: number;
+  low_24h: number;
+  ath: number;
 }
 
 export interface Coin {
@@ -14,4 +17,7 @@ export interface Coin {
   price: number;
   change24h: number;
   image: string;
+  high24h: number;
+  low24h: number;
+  ath: number;
 }

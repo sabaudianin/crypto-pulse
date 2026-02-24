@@ -17,5 +17,8 @@ export async function getTopCoins(): Promise<Coin[]> {
     price: coin.current_price,
     change24h: coin.price_change_percentage_24h,
     image: coin.image,
+    high24h: coin.high_24h,
+    low24h: coin.low_24h,
+    ath: coin.ath,
   }));
 }

@@ -124,3 +124,7 @@
     @apply bg-background text-foreground;
   }
 }
+
+.text-xxs {
+  font-size: 0.625rem;
+}
