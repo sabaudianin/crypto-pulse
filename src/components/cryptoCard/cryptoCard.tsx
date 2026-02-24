@@ -102,7 +102,7 @@ export function CryptoCard({ coin }: { coin: Coin }) {
 
                 <div
                     className={cn(
-                        "inline-flex items-center gap-2 px-4 py-1.5 mt-4 rounded-full text-md font-semibold transition-all duration-300 bg-white/50",
+                        "inline-flex items-center gap-2 px-4 py-1.5 mt-4 rounded-full text-md font-semibold transition-all duration-300 bg-white/90",
                         isPositive
                             ? " text-emerald-600 ring-1 ring-emerald-500/30"
                             : " text-pink-600 ring-1 ring-rose-500/30"
