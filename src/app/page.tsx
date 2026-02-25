@@ -86,7 +86,7 @@ export default function DashboardPage() {
         ) : (
           <>
             {/* 2 duze karty */}
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-2  md:gap-8 mb-2 md:mb-12">
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-2 md:gap-8 mb-6">
               {data?.slice(0, 2).map((coin, index) => (
                 <div
                   key={coin.id}
