@@ -1,9 +1,9 @@
 import { NextRequest, NextResponse } from "next/server";
 import { fetchCoins } from "@/lib/services/coins";
 
-export async function GET(req: NextRequest) {
+export async function GET(request: NextRequest) {
   try {
-    const { searchParams } = new URL(req.url);
+    const { searchParams } = request.nextUrl;
     const page = searchParams.get("page") ?? undefined;
     const perPage = searchParams.get("perPage") ?? undefined;
     const order = searchParams.get("order") ?? undefined;
