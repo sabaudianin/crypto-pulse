@@ -20,7 +20,9 @@ export function useCoins(params: GetCoinsParams) {
       const res = await fetch(buildCoinsQuery(params));
 
       if (!res.ok) {
-        throw new Error("Failed to fetch coins");
+        //wyciagmay bład z serwera jesli istnieje
+        const body = await res.json().catch(() => ({}));
+        throw new Error(body.error ?? "Failed to fetch coins");
       }
 
       return res.json();

@@ -9,6 +9,7 @@ export interface CoinResponse {
   high_24h: number;
   low_24h: number;
   ath: number;
+  market_cap_rank: number;
 }
 
 export interface Coin {
@@ -21,6 +22,7 @@ export interface Coin {
   high24h: number;
   low24h: number;
   ath: number;
+  marketCapRank: number;
 }
 
 export interface GetCoinsParams {
@@ -29,3 +31,5 @@ export interface GetCoinsParams {
   order?: string;
   currency?: string;
 }
+
+export type CoinOrder = "market_cap_desc" | "market_cap_asc" | "volume_desc";

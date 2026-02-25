@@ -40,20 +40,17 @@ export async function fetchCoins({
       next: { revalidate: 60 },
     });
   } catch {
-    throw new CoinServiceError("Nie mozna polaczyc sie z API", 503);
+    throw new CoinServiceError("Can't connect to APi Coin Geco", 503);
   }
 
   //RAte limit
   if (res.status === 429) {
     console.warn("Api rate Limit Hit");
-    throw new CoinServiceError(
-      "Przekroczono limit zapytan. Spróbuj za chwile",
-      429,
-    );
+    throw new CoinServiceError("Rate limit exceeded. Try again latere", 429);
   }
 
   if (!res.ok) {
-    throw new CoinServiceError(`APi Error:${res.status}`, 502);
+    throw new CoinServiceError(`APi Error status: ${res.status}`, 502);
   }
 
   const data: CoinResponse[] = await res.json();
