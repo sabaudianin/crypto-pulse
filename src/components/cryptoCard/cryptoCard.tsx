@@ -137,7 +137,7 @@ export function CryptoCard({ coin }: { coin: Coin }) {
 
                     <div className="self-end pb-1 flex flex-col items-end justify-end text-white/70 font-semibold">
                         <span className="text-xxs lg:text-xs  tracking-tight text-center">
-                            High 24h : $ {coin.high24h.toLocaleString(undefined, {
+                            High 24h : $ {coin?.high24h.toLocaleString(undefined, {
                                 minimumFractionDigits: 2,
                                 maximumFractionDigits: 4,
                             })}

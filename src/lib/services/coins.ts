@@ -31,6 +31,7 @@ export async function fetchCoins({
   url.searchParams.set("order", order);
   url.searchParams.set("per_page", perPage);
   url.searchParams.set("page", page);
+  url.searchParams.set("x_cg_demo_api_key", process.env.COINGECKO_API_KEY!);
 
   //ocluga bledu sieci osobno od http
 
