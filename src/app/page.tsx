@@ -1,4 +1,5 @@
 "use client";
+import Link from "next/link";
 import { useState } from "react";
 import { useCoins } from "@/hooks/useCrypto/useCrypto";
 import { CryptoCard } from "@/components/cryptoCard/cryptoCard";
@@ -37,6 +38,9 @@ export default function DashboardPage() {
 
       {/* content*/}
       <section className="relative max-w-7xl mx-auto px-2 md:px-12 py-10 lg:py-20">
+        <Link href="/auth/sign-in">
+          LOGIN
+        </Link>
         <header className="mb-12 lg:mb-24 text-center space-y-6">
           <div className="flex items-center justify-center gap-3">
             <span className="relative flex h-3 w-3">
