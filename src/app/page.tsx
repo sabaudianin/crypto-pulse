@@ -7,7 +7,7 @@ import { cn } from "@/lib/utils";
 
 export default function DashboardPage() {
   const [page, setPage] = useState(1);
-  const perPage = 20;
+  const perPage = 50;
   const { data, isLoading, isFetching, isPlaceholderData, isError } = useCoins({
     page: String(page),
     perPage: String(perPage),
