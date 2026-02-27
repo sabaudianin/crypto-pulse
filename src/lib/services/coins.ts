@@ -19,7 +19,7 @@ const BASE_URL = process.env.COINGECKO_API_URL!;
 
 export async function fetchCoins({
   page = "1",
-  perPage = "20",
+  perPage = "50",
   order = "market_cap_desc",
   currency = "usd",
 }: GetCoinsParams): Promise<Coin[]> {

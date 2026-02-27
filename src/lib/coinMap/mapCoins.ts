@@ -12,5 +12,6 @@ export function mapCoinResponsToCoin(coin: CoinResponse): Coin {
     high24h: coin.high_24h,
     low24h: coin.low_24h,
     ath: coin.ath,
+    marketCapRank: coin.market_cap_rank,
   };
 }
