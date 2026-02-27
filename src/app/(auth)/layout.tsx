@@ -1,4 +1,3 @@
-
 import Link from "next/link";
 import { ShieldCheck, ChevronLeft, LockKeyhole } from "lucide-react";
 
@@ -32,7 +31,7 @@ export default function AuthLayout({ children }: { children: React.ReactNode }) 
                                 <LockKeyhole className="w-8 h-8 text-emerald-400 group-hover:scale-110 transition-transform" />
                             </div>
                             <h2 className="text-2xl font-black tracking-tighter text-background">
-                                SECURE <span className="text-emerald-500">ACCESS</span>
+                                Secure <span className="text-emerald-500">Access</span>
                             </h2>
                             <p className="text-background/40 text-sm mt-2 font-medium">
                                 Authorized personnel only
