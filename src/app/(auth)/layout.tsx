@@ -7,7 +7,7 @@ import { cn } from "@/lib/utils";
 export default function AuthLayout({ children }: { children: React.ReactNode }) {
     return (
         <Providers>
-            <div className="relative min-h-screen w-full flex items-center justify-center p-2 overflow-hidden bg-slate-950">
+            <section className="relative min-h-screen flex items-center justify-center p-2 overflow-hidden bg-slate-950">
                 <div className="absolute inset-0 z-0">
                     <div className="absolute inset-0 bg-linear-to-br from-emerald-950/20 to-emerald-900/10" />
                     <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-150 h-150 bg-emerald-500/10 blur-3xl rounded-full" />
@@ -70,7 +70,7 @@ export default function AuthLayout({ children }: { children: React.ReactNode }) 
                         Crypto Pulse Protocol v2.6.0
                     </p>
                 </div>
-            </div>
+            </section>
         </Providers>
     );
 }
