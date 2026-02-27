@@ -1,9 +1,9 @@
 "use client";
-
+import { useState } from "react";
 import { useCoins } from "@/hooks/useCrypto/useCrypto";
 import { CryptoCard } from "@/components/cryptoCard/cryptoCard";
 import { Skeleton } from "@/components/ui/skeleton";
-
+import { DashboardListView } from "@/components/dashboardListView/dashboardListView";
 import { RedirectToSignIn, SignedIn } from "@daveyplate/better-auth-ui";
 import { cn } from "@/lib/utils";
 
