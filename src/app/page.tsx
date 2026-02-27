@@ -1,10 +1,15 @@
 "use client";
 import Link from "next/link";
+import { LogIn } from "lucide-react";
 import { useState } from "react";
 import { useCoins } from "@/hooks/useCrypto/useCrypto";
 import { CryptoCard } from "@/components/cryptoCard/cryptoCard";
 import { Skeleton } from "@/components/ui/skeleton";
 import { cn } from "@/lib/utils";
+import { StatCard } from "@/components/statsCard/statsCard";
+import { TrendingUp, Activity, Zap, Globe } from "lucide-react";
+
+
 
 export default function DashboardPage() {
   const [page, setPage] = useState(1);
@@ -23,7 +28,7 @@ export default function DashboardPage() {
   }
 
   return (
-    <div className="relative min-h-screen w-full overflow-hidden bg-slate-950 text-background">
+    <section className="relative min-h-screen w-full overflow-hidden bg-slate-950 text-background">
       {/* poswiaty glow*/}
       <div className="absolute inset-0  overflow-hidden">
         <div className="absolute inset-0 bg-linear-to-b from-cyan-950 via-transparent to-blue-950" />
@@ -37,11 +42,29 @@ export default function DashboardPage() {
       </div>
 
       {/* content*/}
-      <section className="relative max-w-7xl mx-auto px-2 md:px-12 py-10 lg:py-20">
-        <Link href="/auth/sign-in">
-          LOGIN
-        </Link>
-        <header className="mb-12 lg:mb-24 text-center space-y-6">
+      <div className="relative max-w-7xl mx-auto px-2 md:px-12 py-4">
+        <div className="hidden lg:grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+          <StatCard label="Market Status" value="Online" icon={Globe} color="text-emerald-400" />
+          <StatCard label="Active Assets" value="12,482" icon={Activity} color="text-blue-400" />
+          <StatCard label="Global Volume" value="$84.2B" icon={Zap} color="text-amber-400" />
+          <StatCard label="BTC Dominance" value="52.4%" icon={TrendingUp} color="text-orange-400" />
+        </div>
+
+
+        <header className="pb-6 lg:mb-12  text-center space-y-6 pt-4">
+          <h1 className="text-6xl md:text-8xl font-black tracking-tighter leading-none">
+            CRYPTO{" "}
+            <span className="bg-linear-to-b from-emerald-400 via-emerald-300 to-emerald-600 bg-clip-text text-transparent">
+              PULSE
+            </span>
+          </h1>
+
+          <p className="max-w-2xl mx-auto text-white/60 text-lg font-semibold tracking-wide">
+            Real-time digital asset analytics powered by TanStack Query. Data from CoinGecko Api.
+            Built for performance, designed for impact.
+          </p>
+        </header>
+        <div className="flex justify-between items-center p-2">
           <div className="flex items-center justify-center gap-3">
             <span className="relative flex h-3 w-3">
               <span
@@ -62,20 +85,14 @@ export default function DashboardPage() {
               {isFetching ? "Syncing Market..." : "Market Live"}
             </span>
           </div>
-
-
-          <h1 className="text-6xl md:text-8xl font-black tracking-tighter leading-none">
-            CRYPTO{" "}
-            <span className="bg-linear-to-b from-emerald-400 via-emerald-300 to-emerald-600 bg-clip-text text-transparent">
-              PULSE
-            </span>
-          </h1>
-
-          <p className="max-w-2xl mx-auto text-white/60 text-lg font-semibold tracking-wide">
-            Real-time digital asset analytics powered by TanStack Query. Data from CoinGecko Api.
-            Built for performance, designed for impact.
-          </p>
-        </header>
+          <div className="w-10 h-10 rounded-xl bg-linear-to-tr from-emerald-500 to-blue-500 p-px">
+            <div className="w-full h-full rounded-xl flex items-center justify-center">
+              <Link href="/auth/sign-in">
+                <LogIn className="w-5 h-5 text-white" />
+              </Link>
+            </div>
+          </div>
+        </div>
 
 
         {isLoading ? (
@@ -144,7 +161,7 @@ export default function DashboardPage() {
             Next
           </button>
         </div>
-      </section>
-    </div>
+      </div>
+    </section>
   );
 }

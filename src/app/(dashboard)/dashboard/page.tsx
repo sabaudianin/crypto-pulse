@@ -20,7 +20,6 @@ export default function DashboardPage() {
             Failed to connect to the blockchain network.
         </div>
     );
-
     return (
         <>
             <RedirectToSignIn />
