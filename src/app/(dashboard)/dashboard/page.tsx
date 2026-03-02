@@ -12,7 +12,9 @@ export default function DashboardPageUser() {
     const [viewMode, setViewMode] = useState<"grid" | "list">("grid")
     const [favorites, setFavorites] = useState<string[]>(() => {
         const stored = localStorage.getItem("favorites");
-        return stored ? JSON.parse(stored) : []
+        return stored
+            ? JSON.parse(stored)
+            : []
     })
     const { data, isLoading, isError } = useCoins({
         page: "1",
