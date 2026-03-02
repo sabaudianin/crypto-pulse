@@ -1,5 +1,5 @@
 "use client";
-import { useState } from "react";
+import { useState, useEffect, useMemo, useCallback } from "react";
 import { useCoins } from "@/hooks/useCrypto/useCrypto";
 import { CryptoCard } from "@/components/cryptoCard/cryptoCard";
 import { Skeleton } from "@/components/ui/skeleton";
@@ -8,19 +8,45 @@ import { DashboardListView } from "@/components/dashboardListView/dashboardListV
 import { RedirectToSignIn, SignedIn } from "@daveyplate/better-auth-ui";
 import { cn } from "@/lib/utils";
 
-export default function DashboardPage() {
+export default function DashboardPageUser() {
     const [viewMode, setViewMode] = useState<"grid" | "list">("grid")
+    const [favorites, setFavorites] = useState<string[]>(() => {
+        const stored = localStorage.getItem("favorites");
+        return stored ? JSON.parse(stored) : []
+    })
     const { data, isLoading, isError } = useCoins({
         page: "1",
         perPage: "50",
     });
+
+
+    useEffect(() => {
+        localStorage.setItem("favorites", JSON.stringify(favorites))
+    }, [favorites])
+
+
+    const toggleFavorites = useCallback((coinId: string) => {
+        setFavorites(prev => prev.includes(coinId)
+            ? prev.filter(id => id !== coinId)
+            : [...prev, coinId])
+    }, [])
+
+
+    const sortedData = useMemo(() => {
+        if (!data) return null;
+        return data.slice().sort((a, b) => {
+            const aIsFav = favorites.includes(a.id);
+            const bIsFav = favorites.includes(b.id);
+            if (aIsFav === bIsFav) return 0;
+            return aIsFav ? -1 : 1
+        })
+    }, [favorites, data])
 
     if (isError) return (
         <div className="flex items-center justify-center h-[50vh] text-rose-500 font-bold">
             Failed to connect to the blockchain network.
         </div>
     );
-
     return (
         <>
             <RedirectToSignIn />
@@ -28,7 +54,6 @@ export default function DashboardPage() {
                 <section className="flex flex-col">
                     <div className="flex items-center justify-between border-b border-white/5 pb-4">
                         <div>
-
                             <p className="text-white/40 text-sm">Top performing assets in the last 24h</p>
                         </div>
                         <div className="flex items-center bg-white/5 p-1 rounded-xl border border-white/10">
@@ -62,18 +87,28 @@ export default function DashboardPage() {
                         <>
                             {viewMode === "grid" ? (
                                 <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 2xl:grid-cols-4 gap-6">
-                                    {data?.map((coin) => <CryptoCard key={coin.id} coin={coin} />)}
+                                    {data?.map((coin) => (
+                                        <CryptoCard
+                                            key={coin.id}
+                                            coin={coin}
+                                        />
+                                    ))}
                                 </div>
                             ) : (
                                 <div className="space-y-3">
-
-                                    <div className="grid grid-cols-4 px-8 py-2 text-xs uppercase tracking-widest text-white/20 font-black">
-                                        <span>Asset</span>
-                                        <span className="text-right">Price</span>
+                                    <div className="grid grid-cols-4 px-2  py-2 text-xxs uppercase tracking-widest text-white/20 font-black text-center">
+                                        <span className="text-left">Asset</span>
+                                        <span className="">Price</span>
                                         <span className="text-right">24h Change</span>
                                         <span className="text-right">Action</span>
                                     </div>
-                                    {data?.map((coin) => <DashboardListView key={coin.id} coin={coin} />)}
+                                    {sortedData?.map((coin) => (
+                                        <DashboardListView
+                                            key={coin.id}
+                                            coin={coin}
+                                            onToggleFavorite={toggleFavorites}
+                                            isFavorite={favorites.includes(coin.id)}
+                                        />))}
                                 </div>
                             )}
                         </>

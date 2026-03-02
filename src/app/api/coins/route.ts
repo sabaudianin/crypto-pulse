@@ -21,7 +21,7 @@ export async function GET(request: NextRequest) {
     return NextResponse.json({ error: "PerPage limit 50" }, { status: 400 });
   }
 
-  if (order && VALID_ORDERS.includes(order as (typeof VALID_ORDERS)[number])) {
+  if (order && !VALID_ORDERS.includes(order as (typeof VALID_ORDERS)[number])) {
     return NextResponse.json({ error: "Order not valid" }, { status: 400 });
   }
   try {
@@ -31,6 +31,16 @@ export async function GET(request: NextRequest) {
       order,
       currency,
     });
+
+    console.log(
+      coins.find(
+        (c) =>
+          c.high24h === null ||
+          c.low24h === null ||
+          c.ath === null ||
+          c.price === null,
+      ),
+    );
     return NextResponse.json(coins);
 
     //typy błedów teraz mamy odseparowane dzieki CoinServiceError patzr lib/services/coins.ts
