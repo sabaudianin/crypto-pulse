@@ -10,7 +10,7 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
   return (
     <Providers>
       <section className="w-full relative p-2 min-h-screen  bg-stone-900 text-white selection:bg-emerald-500/30">
-        <div className="mb-2 max-w-5xl mx-auto flex items-center justify-between">
+        <div className="mb-2 max-w-6xl mx-auto flex items-center justify-between">
           <h1 className="p-2 text-xl md:text-2xl lg:text-4xl font-black tracking-tighter leading-none text-background">
             CRYPTO{" "}
             <span className="bg-linear-to-b from-emerald-400 via-emerald-300 to-emerald-600 bg-clip-text text-transparent">
