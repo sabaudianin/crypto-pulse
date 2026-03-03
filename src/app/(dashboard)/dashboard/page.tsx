@@ -11,6 +11,7 @@ import { cn } from "@/lib/utils";
 export default function DashboardPageUser() {
     const [viewMode, setViewMode] = useState<"grid" | "list">("grid")
     const [favorites, setFavorites] = useState<string[]>(() => {
+        if (typeof window === "undefined") return [];
         const stored = localStorage.getItem("favorites");
         return stored
             ? JSON.parse(stored)
@@ -23,7 +24,9 @@ export default function DashboardPageUser() {
 
 
     useEffect(() => {
-        localStorage.setItem("favorites", JSON.stringify(favorites))
+        if (typeof window !== undefined) {
+            localStorage.setItem("favorites", JSON.stringify(favorites))
+        }
     }, [favorites])
 
 
@@ -36,12 +39,14 @@ export default function DashboardPageUser() {
 
     const sortedData = useMemo(() => {
         if (!data) return null;
-        return data.slice().sort((a, b) => {
-            const aIsFav = favorites.includes(a.id);
-            const bIsFav = favorites.includes(b.id);
-            if (aIsFav === bIsFav) return 0;
-            return aIsFav ? -1 : 1
-        })
+        return data
+            .slice()
+            .sort((a, b) => {
+                const aIsFav = favorites.includes(a.id);
+                const bIsFav = favorites.includes(b.id);
+                if (aIsFav === bIsFav) return 0;
+                return aIsFav ? -1 : 1
+            })
     }, [favorites, data])
 
     if (isError) return (
