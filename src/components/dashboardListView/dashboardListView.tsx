@@ -1,3 +1,4 @@
+
 import { Coin } from "@/types/crypto";
 import { Heart, TrendingUp, TrendingDown } from "lucide-react";
 import Image from "next/image";
